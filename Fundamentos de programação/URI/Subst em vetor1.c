@@ -1,0 +1,19 @@
+//Questão1 Lista vetores URI
+
+#include <stdio.h>
+
+int main () {
+	int i, x[10];
+	for(i = 0; i <10 ; i++){
+		scanf("%d", &x[i]);
+		if(x[i] <=0){
+			x[i]=1;
+		}
+	}
+	for(i = 0; i < 10; i++){
+		printf("x[%d] = %d\n", i, x[i]4
+		5);
+	}
+	return 0;
+}
+ 
