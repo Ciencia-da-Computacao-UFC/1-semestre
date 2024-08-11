@@ -1,0 +1,63 @@
+ Lógica do Jogo da Velha em C
+
+O tabuleiro do jogo com uma matriz 3x3 de números inteiros.
+Quando uma casa do tabuleiro está vazia, ela contém o número 0.
+Quando o primeiro jogador marca um local, ele está colocando o número 1 nessa casa.
+E quando é o segundo, ele está colocando o número -1 nesse local do tabuleiro.
+
+O jogo termina quando uma linha, coluna ou diagonal é completada por números 1 ou -1.
+Para saber se a linha está completa, basta verificar a soma. Se ela for 3 ou -3, é porque alguém ganhou.
+Se todos os campos do tabuleiro forem preenchidos e ninguém somou 3 ou -3 em uma fila, houve empate.
+
+Uma variável inteira chamada ‘vez’ é a que controlará se a vez do primeiro ou do segundo jogador.
+Fazendo o resto da divisão por 2, e incrementando essa variável a cada rodada, teremos sempre os números 0 e 1 alternadamente, para saber de quem é a vez de jogar.
+
+As funções do Jogo da Velha em C
+A função main() cria o tabuleiro 3x3 e um inteiro ‘continuar’, que será usado no laço do while que irá controlar se o jogador vai continuar jogando ou não.
+Essa variável recebe o resultado da função menu(), que exibe para o usuário a opção de Jogar ou Sair.
+Se o jogador escolher 1, é porquê quer jogar.
+Se escolher 0, é porquê quer sair.
+Se escolher qualquer outro número, digitou errado.
+Essa função retorna o número da opção para a função main().
+De volta na main, se a opção recebida for 1, ‘continuar’ tem valor lógico TRUE e o jogo prossegue. Se a opção recebida for 0, ‘continuar’ tem valor lógico FALSE e o programa termina. Para qualquer outro valor, o laço do while continua a se repetir, até o indivíduo entrar com uma opção válida.
+
+Note que você pode incrementar esse menu, deixando sempre 0 para sair do jogo.
+Pode alterar para jogar Humano x Máquina, escolher quem vai ser ‘X’ e quem vai ser ‘O’, quem começa e por ai vai.
+
+Na main(), se a opção recebida for 1, chamamos a função jogar() passando o tabuleiro como argumento. Essa função que ficará responsável pelo desenrolar do jogo.
+Na função jogar(), a primeira coisa a ser feita é colocar 0 em todas as posições do tabuleiro, pois pode ter lixo lá, e fazemos isso chamando a função zeraTabuleiro() e passando a matriz para ele zerar. Como matriz é um vetor, a passagem é feita automaticamente por referência, então a matriz tem seus valores alterados, todos para 0.
+
+Voltando a função jogar(), ela cria um looping com o laço do while, que se repete enquanto o jogo não termina. E cada iteração desse laço é uma jogada.
+
+Porém, antes da jogada, usamos a função clear(), que simplesmente imprime vários caracteres de newline \n na tela.
+Você pode até usar o comando system(“cls”) para Windows ou system(“clear”) para Linux, mas são funções inseguras e pesadas, que consomem muito processamento das máquinas, mas nada que você vá notar em um programa simples como este, porém é bom cultivarmos boas práticas de programação desde cedo, e o efeito de imprimir várias quebras de linha não muda em nada a estética do jogo, só deixa sua aplicação mais robusta e segura.
+
+Após limpar a tela, vamos exibir o tabuleiro.
+Porém, ficaria muito feio e incômodo pro usuário um tabuleiro cheio de números 0, 1 e -1.
+Ao invés disso, vamos percorrer todos os números da matriz inteiros e onde encontrarmos o número 0, vamos imprimir um espaço vazio. Onde tiver número 1, imprimimos o ‘X’ e se nos depararmos com o número  -1, exibimos ‘O’ pro usuário, naquela posição.
+Colocamos colunas | após cada coluna (exceto após a última coluna).
+Isso tudo é feito na função exibeTabuleiro().
+
+A jogada é feita através da função jogada(), que pede ao usuário uma linha e coluna para marcar no tabuleiro.
+
+Note que o usuário vai colocar números entre 1 e 3, mas seu tabuleiro trabalha com índices entre 0 e 2. Ou seja, quando o usuário insere o número da linha e o da coluna, devemos decrementar em 1 cada um desses valores.
+Após isso, usamos a função checaLocal(), que recebe o tabuleiro, a linha e a coluna que o usuário inseriu e vai no tabuleiro ver se aquela posição está vazia, ou seja, se tem o número 0 naquela casa. Se não estiver, o laço do while continua a se repetir até o usuário inserir valores de linha e coluna que representem uma casa vazia no tabuleiro.
+E além de checar se está vazia, temos que checar se o usuário inseriu valores corretos de linha e coluna (não pode ser menor que 1 nem maior que 3).
+
+Quando entramos nessa função jogada(), a variável global ‘vez’ é incrementada em 1, e fazemos o resto da divisão por 2, que vai ter resultados 0 e 1 alternadamente. Somamos 1 a esses resultados, e o usuário vê se é a vez do jogador 1 ou jogador 2 de jogar.
+Após ter escolhido o local e checado que ele está vazio, vamos marcar aquele lugar no tabuleiro, usando a variável ‘vez’. Se o resto da divisão por 2 for 0, é porque é o jogador 1 que vai jogar e marcamos o número ‘1’ na casa, mas se o resto da divisão for 1, é porque é o jogador 2 que vai jogar e marcamos o número ‘-1’ no local.
+
+Esse procedimento de jogada vai se repetir enquanto o jogo não termina.
+E quem diz se o jogo termina ou não, é a função checaTermino(), que nada mais é que um conjunto de outras funções dentro dela, como:
+checaLinha() – essa função checa a soma de cada linha do tabuleiro, se alguma for 3 ou -3, é porque alguém ganhou.
+checaColuna() – faz a mesma coisa da função anterior, mas checa as colunas
+checaDiagonal() – essa função checa as duas diagonais de nosso tabuleiro, pra ver se a soma de uma delas é 3 ou -3
+
+Se alguma das funções anteriores acusar soma 3 ou -3, elas retornam valor 1 (TRUE), então o teste condiciona if é acionado, a mensagem de vitória é dada e a função retorna valor 1, dizendo que o jogo terminou.
+
+Temos ainda a função checaEmpate(), que checa se ainda existe alguma casa livre no tabuleiro. Ou seja, ela sai em busca do número 0, que representa casa vazia, se encontrar retorna valor lógico FALSE, indicando que não foi empate.
+Porém, se não encontrar 0, é porque o tabuleiro está preenchido e ela retorna valor 1 e a mensagem de empate.
+
+Após terminar o jogo, com alguém vencendo ou dando empate, voltamos pro looping da função main(), que pergunta novamente se você quer jogar ou não.
+Se sim, tudo ocorre de novo.
+Se não, o programa em C termina.
